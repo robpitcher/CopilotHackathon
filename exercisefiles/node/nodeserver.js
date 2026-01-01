@@ -8,12 +8,16 @@
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
+const axios = require('axios'); // Required for the /TellMeAJoke endpoint
 
 const server = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const pathname = parsedUrl.pathname;
     const query = parsedUrl.query;
 
+    // Endpoint to return the hex code for a given color name.
+    // It reads from colors.json to find the color.
+    // Example: /ReturnColorCode?color=red
     if (pathname === '/ReturnColorCode') {
         const color = query.color;
         if (color) {
@@ -37,6 +41,8 @@ const server = http.createServer((req, res) => {
             res.end('color parameter is required');
         }
     }
+    // Endpoint to calculate the number of days between two dates.
+    // Example: /DaysBetweenDates?date1=2023-01-01&date2=2023-01-31
     if (pathname === '/DaysBetweenDates') {
         const date1 = query.date1;
         const date2 = query.date2;
@@ -52,6 +58,8 @@ const server = http.createServer((req, res) => {
             res.end('date1 and date2 parameters are required');
         }
     }
+    // Endpoint to return a greeting with the provided key.
+    // Example: /get?key=world
     if (pathname === '/get') {
         const key = query.key;
         if (key) {
@@ -62,6 +70,9 @@ const server = http.createServer((req, res) => {
             res.end('key not passed');
         }
     }
+    // Endpoint to validate a Spanish phone number.
+    // Format: +34 followed by 9 digits.
+    // Example: /Validatephonenumber?phoneNumber=+34123456789
     if (pathname === '/Validatephonenumber') {
         const phoneNumber = query.phoneNumber;
         if (phoneNumber) {
@@ -79,6 +90,9 @@ const server = http.createServer((req, res) => {
             res.end('phoneNumber parameter is required');
         }
     }
+    // Endpoint to validate a Spanish DNI (National Identity Document).
+    // It checks the format (8 digits followed by a letter) and validates the letter.
+    // Example: /ValidateSpanishDNI?dni=12345678Z
     if (pathname === '/ValidateSpanishDNI') {
         const dni = query.dni;
         if (dni) {
@@ -105,6 +119,8 @@ const server = http.createServer((req, res) => {
             res.end('dni parameter is required');
         }
     }
+    // Endpoint to fetch a random joke from an external API.
+    // Example: /TellMeAJoke
     if (pathname === '/TellMeAJoke') {
         axios.get('https://official-joke-api.appspot.com/random_joke')
             .then(response => {
@@ -121,6 +137,8 @@ const server = http.createServer((req, res) => {
             });
         return;
     }
+    // Endpoint to list files in the current working directory of the server process.
+    // Example: /ListFiles
     if (pathname === '/ListFiles') {
         try {
             const currentDir = process.cwd();
@@ -135,6 +153,8 @@ const server = http.createServer((req, res) => {
             res.end('error reading directory');
         }
     }
+    // Endpoint to calculate and return the memory consumption of the Node.js process in GB.
+    // Example: /CalculateMemoryConsumption
     if (pathname === '/CalculateMemoryConsumption') {
         const memoryUsage = process.memoryUsage();
         const memoryInGB = (memoryUsage.heapUsed / (1024 * 1024 * 1024)).toFixed(2);
@@ -146,6 +166,7 @@ const server = http.createServer((req, res) => {
 
 });
 
+// Start the server and listen on port 3000
 server.listen(3000, () => {
     console.log('server is listening on port 3000');
 });
