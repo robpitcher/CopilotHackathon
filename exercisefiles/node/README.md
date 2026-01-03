@@ -147,6 +147,95 @@ Now that we have the new functionality added and tests covering it, lets create 
 
 - Build the image using Copilot and expose the port 3000.
 
+### Exercise 6: Customize Copilot with repo, path, and file-type instructions
+
+- Configure Copilot Custom Instructions to guide suggestions for this project:
+  - Repo-level: prefer Node 18+, keep endpoints small and pure, use axios for HTTP, follow the current coding style of nodeserver.js, and write tests with mocha/chai.
+  - Path-based (exercisefiles/node/**): maintain port 3000, reuse existing endpoint names, keep error handling consistent, and avoid introducing heavy frameworks.
+  - File-type rules:
+    - .js files: prefer consistent import style used in nodeserver.js, add JSDoc comments, and avoid global state.
+    - dockerfile: use a slim base image, set NODE_ENV=production, and expose port 3000.
+- Apply your instructions:
+  - In Copilot Chat, ask Copilot to "explain nodeserver.js given our custom instructions" and then "suggest a small refactor for one endpoint consistent with the instructions."
+  - In test.js, ask Copilot to "add one new mocha test for an existing endpoint, aligned with our custom instructions."
+
+  > **_NOTE:_** Custom Instructions influence Copilot's behaviors globally and per scope. Keep them concise and specific.
+
+- Success criteria:
+  - Suggestions honor the chosen style and structure.
+  - The added test follows mocha style and naming consistent with the repository.
+
+### Exercise 7: Create and use a Prompt File for this Node folder
+
+- Add a prompt file dedicated to these exercises (for example: exercisefiles/node/prompt-exercises.md).
+- Include context and guidance such as:
+  - Project goals, coding style (consistent with nodeserver.js), test patterns (mocha/chai), and API usage (axios).
+  - Data files to reference (colors.json, sample.txt) and endpoints already implemented.
+  - Expectations for small, incremental changes and readable documentation.
+- Suggested prompt content:
+  - Title: "Copilot Node Exercise Context"
+  - Persona: "You are a helpful assistant for a Node server with mocha tests and axios calls."
+  - Rules:
+    - Keep endpoints small and pure, prefer synchronous readability with async/await where needed.
+    - Use axios for external APIs; handle errors and timeouts.
+    - Add JSDoc comments and propose tests alongside new code.
+    - Prefer changes within exercisefiles/node unless explicitly stated.
+- Use the prompt file in Copilot Chat:
+  - Open the prompt file and add it to the chat context, then request "Given this prompt file, propose documentation improvements for nodeserver.js endpoints."
+
+  > **_NOTE:_** Prompt files act as durable context. Keep them short, concrete, and project-specific.
+
+- Success criteria:
+  - Copilot references the prompt file content in its explanations and suggestions.
+  - The generated documentation matches the style from earlier exercises.
+
+### Exercise 8: Use Copilot MCP tools to augment the Node exercises
+
+- Configure Copilot MCP tools available in your environment (e.g., filesystem and HTTP).
+- Filesystem tool:
+  - Ask Copilot to use the MCP filesystem tool to read exercisefiles/node/colors.json and summarize how "/ReturnColorCode" should behave.
+  - Request a step-by-step plan to handle missing colors and invalid inputs.
+- HTTP tool:
+  - Use the MCP HTTP tool to fetch a sample response from the joke API (https://official-joke-api.appspot.com/random_joke) and discuss how to integrate retry/backoff in the endpoint.
+  - For the movies endpoint, outline an HTTP call flow including API key usage for OMDB and basic error handling.
+
+  > **_NOTE:_** MCP tools bring external resources into chat context. Validate sample outputs and avoid committing secrets.
+
+- Success criteria:
+  - Copilot produces accurate summaries from colors.json.
+  - Copilot proposes clear HTTP handling patterns aligned with axios and the existing endpoint designs.
+
+### Exercise 9: Run the Copilot coding agent asynchronously to propose improvements
+
+- In GitHub, start a Copilot coding agent task that works asynchronously:
+  - Request: "Refactor nodeserver.js by extracting endpoints into small modules and add missing tests in test.js. Keep behavior identical. Propose a Dockerfile improvement for a smaller image."
+  - Ask the agent to open a PR in a new branch (e.g., node-refactor) and include a summary of changes, risks, and test coverage.
+- While the agent runs:
+  - Continue local work and periodically check the agent's progress and PR status.
+  - Review the PR once available and ask Copilot Chat "/explain" on the diff to understand the changes.
+
+  > **_NOTE:_** The coding agent operates asynchronously and may iterate. Provide clear constraints and accept/reject changes via normal PR review.
+
+- Success criteria:
+  - A PR appears with small, readable refactors, added tests, and a modest Dockerfile improvement.
+  - Explanations in the PR are clear and align with repository conventions.
+
+### Exercise 10: Create and use a custom agent tailored to this folder
+
+- Define a custom agent specialized for exercisefiles/node:
+  - Default context: exercisefiles/node
+  - Tools: MCP filesystem and HTTP, Copilot Chat commands (/tests, /fix, /explain)
+  - Behaviors: propose small changes with tests, respect custom instructions and prompt files, avoid secrets, and prefer axios with error handling.
+- Use your custom agent:
+  - Ask it to "review nodeserver.js for input validation gaps and propose minimal fixes with corresponding mocha tests."
+  - Ask it to "suggest documentation updates in README for new endpoints, consistent with Exercises 1–5."
+
+  > **_NOTE:_** Custom agents encapsulate preferences and tools so you get consistent guidance without repeating context every time.
+
+- Success criteria:
+  - The agent produces actionable, scoped suggestions aligned with the established style.
+  - Proposed tests and docs fit the existing exercise pattern.
+
 ## Summary
 
 With the previous exercises you have gone through some common activities that developers usually run:
