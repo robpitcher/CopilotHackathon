@@ -1,160 +1,276 @@
-# Activate GitHub Copilot using Nodejs 
+# Node.js Server with GitHub Copilot
 
-Demo project for running labs to evaluate Copilot viability
+## Overview
 
-> Make sure GitHub Copilot is configure and enabled for the current language, just check the status bar on the bottom right corner of VS Code.
+This tutorial teaches you how to use GitHub Copilot to build a Node.js web server with multiple API endpoints. You will learn to leverage Copilot's code suggestions, inline chat, and chat features to write code faster and more efficiently.
 
-### Exercise 1: Introduction
+**What you'll learn:**
+- Accept and use GitHub Copilot code suggestions
+- Use Copilot Chat and inline chat to generate code
+- Build API endpoints with various functionalities
+- Write tests and documentation with Copilot
+- Create a Dockerfile using Copilot
 
-- Go to the exercisefile folder
-- Open `nodeserver.js` and begin by writing a Nodejs server, check the first suggestions based on the initial text
-- Open `test.js` file and analyze the current test
-- Open a command prompt and run the test (`mocha test.js`)
-- See the result, it should display something like:
+**Expected outcome:** A working Node.js web server with multiple endpoints, tests, and a Dockerfile.
 
-``` bash
-mocha test.js
-server is listening on port 3000
+## Prerequisites
 
-  Node Server
-    
-    √ should return "key not passed" if key is not passed
+Before starting this tutorial, ensure you have:
+- GitHub Copilot access (see root README for setup instructions)
+- Node.js and npm installed
+- Mocha installed globally (`npm install --global mocha`)
+- Axios installed (`npm install axios`)
+- Visual Studio Code with GitHub Copilot extensions installed
 
-  1 passing (34ms)
+## Setup
 
-```
+1. Navigate to the exercise directory:
 
-### Exercise 2: Building new functionalities
+   ```bash
+   cd exercisefiles/node
+   ```
 
-The exercise consist of building a web server using Nodejs that serves the request of various functionality.
+2. Verify GitHub Copilot is active by checking the status bar in the bottom-right corner of VS Code.
 
-The requests that the server must attend are the following:
+## Using GitHub Copilot
 
-- **/Get** : 
+**Key actions:**
+- Accept suggestions by pressing **Tab**
+- View more suggestions with **Ctrl + Enter** (or **Cmd + Enter** on Mac)
+- Open inline chat with **Ctrl + I** (or **Cmd + I** on Mac)
+- Open Copilot Chat from the sidebar
 
-  * Return a hello world message
+## Exercises
 
+### Exercise 1: Introduction to the Project
 
-- **/DaysBetweenDates**: 
+1. Open the `nodeserver.js` file and review the initial Node.js server code.
 
-  * Calculate days between two dates
-  * receive by query string 2 parameters date1 and date 2, and calculate the days between those two dates.
+2. Open the `test.js` file and examine the existing test.
 
-  > **_NOTE:_** Use above information inside the Copilot inline feature in the `nodeserver.js` file. Press enter and wait for Copilot to suggest you the code.
+3. Run the test to verify the initial setup:
 
+   ```bash
+   mocha test.js
+   ```
 
-- **/Validatephonenumber**: 
+   **Expected output:**
 
-  * Receive by querystring a parameter called phoneNumber 
-  * validate phoneNumber with Spanish format, for example +34666777888
-  * if phoneNumber is valid return "valid"
-  * if phoneNumber is not valid return "invalid"
+   ```bash
+   server is listening on port 3000
 
-  > **_NOTE:_** Use above information inside the Copilot inline feature in the `nodeserver.js` file. Press enter and wait for Copilot to suggest you the code.
+     Node Server
+       
+       √ should return "key not passed" if key is not passed
 
+     1 passing (34ms)
+   ```
 
-- **/ValidateSpanishDNI**:
+### Exercise 2: Build API Endpoints
 
-  * Receive by querystring a parameter called dni
-  * calculate DNI letter
-  * if DNI is valid return "valid"
-  * if DNI is not valid return "invalid"
+Build a web server with the following endpoints. Use GitHub Copilot to help generate the code.
 
-  > NOTE: Use above information inside a comment in the `nodeserver.js` file. In this case, you may want to see multiple solutions from Copilot to pick the one that best fits the way to calculate the letter. In order to see the firs 10 suggestions from Copilot press ctrl + enter.
+#### 1. GET endpoint
 
+**Requirements:**
+- Return a "Hello World" message
 
-- **/ReturnColorCode**:
+**Tip:** Start typing a comment or function name and let Copilot suggest the implementation.
 
-  * Receive by querystring a parameter called color
-  * read colors.json file and return the rgba field
-  * get color var from querystring
-  * iterate for each color in colors.json to find the color
-  * return the code.hex field
+#### 2. /DaysBetweenDates endpoint
 
-  > NOTE: Lets try Copilot chat now. Paste the above information and make it as detailed as possible in the Copilot chat text box. Copilot will use by default the open file as context in order to generate the suggestion.
+**Requirements:**
+- Calculate days between two dates
+- Accept two query parameters: `date1` and `date2`
+- Return the number of days between the dates
 
-- **/TellMeAJoke**:
+**Tip:** Use Copilot inline chat. Type the requirements as a comment, press **Enter**, and wait for Copilot to suggest code.
 
-  * Make a call to the joke api and return a random joke using axios (https://official-joke-api.appspot.com/random_joke)
-        
+#### 3. /ValidatePhoneNumber endpoint
 
-- **/MoviesByDirector**:
+**Requirements:**
+- Accept a query parameter: `phoneNumber`
+- Validate phone numbers in Spanish format (e.g., `+34666777888`)
+- Return `"valid"` or `"invalid"`
 
-  * Receive by querystring a parameter called director
-  * Make a call to the movie api  and return a list of movies of that director using axios
-  * Return the full list of movies
+**Tip:** Use Copilot inline chat by pressing **Ctrl + I**, then describe the requirements.
 
-  > **_NOTE:_** This will require to browse to https://www.omdbapi.com/apikey.aspx and request a FREE API Key
+#### 4. /ValidateSpanishDNI endpoint
 
+**Requirements:**
+- Accept a query parameter: `dni`
+- Calculate and validate the DNI letter
+- Return `"valid"` or `"invalid"`
 
-- **/ParseUrl**:
+**Tip:** Add the requirements as a comment. Press **Ctrl + Enter** to see multiple suggestions from Copilot and choose the best implementation.
 
-  * Retrieves a parameter from querystring called someurl
-  * Parse the url and return the protocol, host, port, path, querystring and hash
-  * Return the parsed host
+#### 5. /ReturnColorCode endpoint
 
-- **/ListFiles**:
+**Requirements:**
+- Accept a query parameter: `color`
+- Read the `colors.json` file
+- Find the matching color
+- Return the `code.hex` field
 
-  * Get the current directory
-  * Get the list of files in the current directory
-  * Return the list of files
+**Tip:** Use Copilot Chat. Paste the requirements into the chat window. Copilot will use the open file as context.
 
-  > **_NOTE:_** Copilot can also help with these kind of commands locally. The feature is called Copilot in the CLI. You can learn more information about this feature [here](https://docs.github.com/en/copilot/github-copilot-in-the-cli/about-github-copilot-in-the-cli).
+#### 6. /TellMeAJoke endpoint
 
+**Requirements:**
+- Make an API call to `https://official-joke-api.appspot.com/random_joke`
+- Use axios to fetch a random joke
+- Return the joke
 
-- **/GetFullTextFile**:
+**Tip:** Let Copilot suggest the axios call structure.
 
-  * Read `sample.txt`` and return lines that contains the word "Fusce"
+#### 7. /MoviesByDirector endpoint
 
-  > **_NOTE:_** Becareful with this implementation, since this normally reads the full content of the file before analizing it, so memory usage is high and may fail when files are too big.
-  >
-  > You can use Copilot Code completion or inline chat. Once done you can also use Copilot Inline Chat to refactor the code to put this logic in a function.
+**Requirements:**
+- Accept a query parameter: `director`
+- Make an API call to the OMDB API using axios
+- Return the full list of movies by that director
 
-- **/GetLineByLinefromtTextFile**:
+**Note:** You need a free API key from https://www.omdbapi.com/apikey.aspx
 
-  * Read `sample.txt` line by line
-  * Create a promise to read the file line by line, and return a list of lines that contains the word "Fusce"
-  * Return the list of lines
+**Tip:** Describe the API call in a comment and let Copilot generate the code.
 
-  > **_NOTE:_** You can use Copilot Code completion or inline chat. Once done you can also use Copilot Inline Chat to refactor the code to put this logic in a function.
+#### 8. /ParseUrl endpoint
 
-- **/CalculateMemoryConsumption**:
+**Requirements:**
+- Accept a query parameter: `someurl`
+- Parse the URL and extract protocol, host, port, path, query string, and hash
+- Return the parsed host
 
-  * Return the memory consumption of the process in GB, rounded to 2 decimals
+**Tip:** Use Copilot to suggest URL parsing methods.
 
+#### 9. /ListFiles endpoint
 
-- **/RandomEuropeanCountry**:
+**Requirements:**
+- Get the current directory
+- List all files in the directory
+- Return the file list
 
-  * Make an array of european countries and its iso codes
-  * Return a random country from the array
-  * Return the country and its iso code
+**Tip:** You can also use Copilot in the CLI for file system commands.
 
-  > **_NOTE:_** Copilot can help you to generate data sets.
+#### 10. /GetFullTextFile endpoint
 
-### Excercise 3: Document the code
+**Requirements:**
+- Read `sample.txt`
+- Return all lines containing the word "Fusce"
 
-Documenting code is always a boring and painful task. However, we can use Copilot to document it for us. In the chat, ask Copilot to document the `nodeserver.js` file. 
+**Warning:** This implementation reads the entire file into memory, which may fail for large files.
 
-### Exercise 4: Building tests
+**Tip:** Use Copilot code completion or inline chat. After implementing, use Copilot inline chat to refactor the code into a separate function.
 
-We will create automated tests to check that the functionality of the previous endpoints is correctly implemented. The tests should be together in the `test.js` file.
+#### 11. /GetLineByLineFromTextFile endpoint
 
-You can leverage Copilot to run the tests. There is a `/tests` command that you can directly run from Copilot Chat or by selecting the piece of code you want to create tests for and using the Copilot inline feature. 
+**Requirements:**
+- Read `sample.txt` line by line
+- Use a promise to read the file
+- Return a list of lines containing the word "Fusce"
+
+**Tip:** Use Copilot code completion or inline chat. After implementing, ask Copilot to refactor the logic into a reusable function.
+
+#### 12. /CalculateMemoryConsumption endpoint
+
+**Requirements:**
+- Calculate the memory consumption of the process
+- Return the value in GB, rounded to 2 decimal places
+
+**Tip:** Let Copilot suggest the Node.js memory API.
+
+#### 13. /RandomEuropeanCountry endpoint
+
+**Requirements:**
+- Create an array of European countries with ISO codes
+- Return a random country and its ISO code
+
+**Tip:** Copilot can generate data sets for you.
+
+### Exercise 3: Document the Code
+
+1. Open Copilot Chat from the sidebar.
+
+2. Ask Copilot to document the `nodeserver.js` file.
+
+   **Example prompt:** "Document the nodeserver.js file with JSDoc comments."
+
+3. Review the generated documentation and accept the suggestions.
+
+### Exercise 4: Write Tests
+
+1. Open the `test.js` file.
+
+2. Use GitHub Copilot to generate tests for the endpoints you created.
+
+   **Tip:** You can use the `/tests` command in Copilot Chat or select the code you want to test and use Copilot inline chat.
+
+3. Run the tests to verify your implementation:
+
+   ```bash
+   mocha test.js
+   ```
 
 ### Exercise 5: Create a Dockerfile
 
-Now that we have the new functionality added and tests covering it, lets create a Dockerfile for the Node JS Application.
+1. Create a new file named `Dockerfile` in the exercise directory.
 
-- Build the image using Copilot and expose the port 3000.
+2. Use GitHub Copilot to generate a Dockerfile that:
+   - Builds a Docker image for the Node.js application
+   - Exposes port 3000
+
+   **Tip:** Start typing "FROM node" and let Copilot suggest the rest.
+
+3. Build the Docker image:
+
+   ```bash
+   docker build -t node-server .
+   ```
+
+4. Run the container:
+
+   ```bash
+   docker run -p 3000:3000 node-server
+   ```
+
+## Troubleshooting
+
+### GitHub Copilot is not providing suggestions
+
+- Verify Copilot is active by checking the status bar in the bottom-right corner of VS Code.
+- Ensure you have an active Copilot license.
+- Check that Copilot is enabled for JavaScript files in VS Code settings.
+- Try reloading the VS Code window (**Ctrl + Shift + P** → "Reload Window").
+
+### Tests are failing
+
+- Ensure all dependencies are installed: `npm install`
+- Verify Mocha is installed globally: `npm install --global mocha`
+- Check that the server is running on port 3000.
+- Review the test output for specific error messages.
+
+### API calls are failing
+
+- For the OMDB API, ensure you have a valid API key.
+- Check your internet connection.
+- Verify the API endpoint URLs are correct.
+
+### File reading errors
+
+- Ensure `sample.txt` and `colors.json` exist in the exercise directory.
+- Check file permissions.
 
 ## Summary
 
-With the previous exercises you have gone through some common activities that developers usually run:
-- Create new features in the code
-- Work with external APIs
-- Create documentation
-- Create tests
+You have completed the Node.js tutorial with GitHub Copilot! You practiced:
+- Creating new features with Copilot suggestions
+- Working with external APIs
+- Generating documentation
+- Writing tests
+- Creating a Dockerfile
 
-However, there are many other things that Copilot can help you with. Feel free to explore other slash command in the Copilot chat like:
-- `/fix`: to fix the problems in your code
-- `/explain`: for Copilot to explain you what the code does
+**Explore more Copilot features:**
+- `/fix` - Fix problems in your code
+- `/explain` - Get explanations of code
+- `/doc` - Generate documentation
+- `/tests` - Generate tests
