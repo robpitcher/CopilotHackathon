@@ -201,29 +201,61 @@ Try it out
 - Open `exercisefiles/node/nodeserver.js` and in Copilot Chat ask: "Add a tiny health-check endpoint"
 - Open `exercisefiles/node/test.js` and ask: "Add one mocha test for the health-check endpoint"
 
-### Exercise 7: Create and use a Prompt File for this Node folder
+### Exercise 7: Add a Reusable Prompt to This Repo
 
-- Add a prompt file dedicated to these exercises (for example: exercisefiles/node/prompt-exercises.md).
-- Include context and guidance such as:
-  - Project goals, coding style (consistent with nodeserver.js), test patterns (mocha/chai), and API usage (axios).
-  - Data files to reference (colors.json, sample.txt) and endpoints already implemented.
-  - Expectations for small, incremental changes and readable documentation.
-- Suggested prompt content:
-  - Title: "Copilot Node Exercise Context"
-  - Persona: "You are a helpful assistant for a Node server with mocha tests and axios calls."
-  - Rules:
-    - Keep endpoints small and pure, prefer synchronous readability with async/await where needed.
-    - Use axios for external APIs; handle errors and timeouts.
-    - Add JSDoc comments and propose tests alongside new code.
-    - Prefer changes within exercisefiles/node unless explicitly stated.
-- Use the prompt file in Copilot Chat:
-  - Open the prompt file and add it to the chat context, then request "Given this prompt file, propose documentation improvements for nodeserver.js endpoints."
+Create a repo-scoped, reusable prompt that anyone can invoke from Copilot Chat for consistent, repeatable results.
 
-  > **_NOTE:_** Prompt files act as durable context. Keep them short, concrete, and project-specific.
+1) Create the prompt library folder
+- Add a new folder: `.github/prompts/`
 
-- Success criteria:
-  - Copilot references the prompt file content in its explanations and suggestions.
-  - The generated documentation matches the style from earlier exercises.
+2) Add the reusable prompt file
+- Create `.github/prompts/onboarding.prompt.md` with the content below:
+
+```md
+---
+agent: 'ask'
+model: 'GPT-5.1'
+description: 'Help new team members onboard with a phased plan and suggestions for first tasks.'
+---
+
+# Create My Onboarding Plan
+
+I'm a new team member joining ${input:team:Team or project name} and I need help creating a structured onboarding plan.
+
+My background: ${input:background:Briefly describe your experience level - new to tech, experienced developer new to this stack, etc.}
+
+Please create a personalized phased onboarding plan that includes the following phases.
+
+## Phase 1 - Foundation
+
+Environment setup with step-by-step instructions and troubleshooting tips, plus identifying the most important documentation to read first
+
+## Phase 2 - Exploration
+
+Codebase discovery starting with README files, running existing tests/scripts to understand workflows, and finding beginner-friendly first tasks like documentation improvements. If possible, find me specific open issues or tasks that are suitable for my background.
+
+## Phase 3 - Integration
+
+Learning team processes, making first contributions, and building confidence through early wins
+
+For each phase, break down complex topics into manageable steps, recommend relevant resources, provide concrete next steps, and suggest hands-on practice over just reading theory.
+```
+
+3) Use the prompt from Copilot Chat
+- Open Copilot Chat start typing `/onboarding` (notice the autocomplete in Copilot Chat), press enter to run the prompt.
+- Notice that the prompt switches to ASK mode with model GPT-5.1, as these were specified in the prompt file.
+- Ask: “Using the reusable prompt, propose an endpoint to GET `/healthz` and add one mocha test. Keep changes inside `exercisefiles/node`.”
+
+4) Verify repeatability
+- Re-run a similar request for a different change (e.g., improve error handling on the joke endpoint). Confirm Copilot follows the same checklist and reply format without restating rules.
+
+Success criteria
+- The prompt file lives at `.github/prompts/node-review.md` and is discoverable.
+- Copilot references the checklist and returns plan/patch/tests/notes consistently across multiple requests.
+
+Stretch ideas
+- Add another prompt (e.g., `.github/prompts/release-notes.md`) to generate release notes from merged PRs.
+- Parameterize your ask in chat by adding a short preface like: “Context: file X, behavior Y. Use the reusable prompt.”
 
 ### Exercise 8: Use Copilot MCP tools to augment the Node exercises
 
