@@ -233,19 +233,14 @@ Please create a personalized onboarding plan to help me ramp up effectively. The
 ```
 
 3) Use the prompt from Copilot Chat
-- Open Copilot Chat, start typing `/onboarding` (notice the autocomplete in Copilot Chat), and press enter to run the prompt.
+- Open Copilot Chat and type `/onboarding language:node background:new developer` and press enter.
 - Notice that the prompt switches to ASK mode with model GPT-5.1, as these were specified in the prompt file.
 
 4) Verify repeatability
-- Re-run a similar request for a different change (e.g., improve error handling on the joke endpoint). Confirm Copilot follows the same checklist and reply format without restating rules.
-
-Success criteria
-- The prompt file lives at `.github/prompts/node-review.md` and is discoverable.
-- Copilot references the checklist and returns plan/patch/tests/notes consistently across multiple requests.
+- Experiment re-running the prompt using one of the other languages or personas listed in `exercisefiles/` and/or changing your `background:`.
 
 Stretch ideas
-- Add another prompt (e.g., `.github/prompts/release-notes.md`) to generate release notes from merged PRs.
-- Parameterize your ask in chat by adding a short preface like: “Context: file X, behavior Y. Use the reusable prompt.”
+- Add another prompt (e.g., `.github/prompts/release-notes.prompt.md`) to generate release notes from merged PRs.
 
 ### Exercise 8: Use Copilot MCP tools to augment the Node exercises
 
