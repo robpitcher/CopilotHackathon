@@ -1,4 +1,4 @@
-# Activate GitHub Copilot using Nodejs 
+# Activate GitHub Copilot using Nodejs
 
 Demo project for running labs to evaluate Copilot viability
 
@@ -17,7 +17,7 @@ mocha test.js
 server is listening on port 3000
 
   Node Server
-    
+
     √ should return "key not passed" if key is not passed
 
   1 passing (34ms)
@@ -30,12 +30,12 @@ The exercise consist of building a web server using Nodejs that serves the reque
 
 The requests that the server must attend are the following:
 
-- **/Get** : 
+- **/Get** :
 
   * Return a hello world message
 
 
-- **/DaysBetweenDates**: 
+- **/DaysBetweenDates**:
 
   * Calculate days between two dates
   * receive by query string 2 parameters date1 and date 2, and calculate the days between those two dates.
@@ -43,9 +43,9 @@ The requests that the server must attend are the following:
   > **_NOTE:_** Use above information inside the Copilot inline feature in the `nodeserver.js` file. Press enter and wait for Copilot to suggest you the code.
 
 
-- **/Validatephonenumber**: 
+- **/Validatephonenumber**:
 
-  * Receive by querystring a parameter called phoneNumber 
+  * Receive by querystring a parameter called phoneNumber
   * validate phoneNumber with Spanish format, for example +34666777888
   * if phoneNumber is valid return "valid"
   * if phoneNumber is not valid return "invalid"
@@ -76,7 +76,7 @@ The requests that the server must attend are the following:
 - **/TellMeAJoke**:
 
   * Make a call to the joke api and return a random joke using axios (https://official-joke-api.appspot.com/random_joke)
-        
+
 
 - **/MoviesByDirector**:
 
@@ -133,13 +133,13 @@ The requests that the server must attend are the following:
 
 ### Excercise 3: Document the code
 
-Documenting code is always a boring and painful task. However, we can use Copilot to document it for us. In the chat, ask Copilot to document the `nodeserver.js` file. 
+Documenting code is always a boring and painful task. However, we can use Copilot to document it for us. In the chat, ask Copilot to document the `nodeserver.js` file.
 
 ### Exercise 4: Building tests
 
 We will create automated tests to check that the functionality of the previous endpoints is correctly implemented. The tests should be together in the `test.js` file.
 
-You can leverage Copilot to run the tests. There is a `/tests` command that you can directly run from Copilot Chat or by selecting the piece of code you want to create tests for and using the Copilot inline feature. 
+You can leverage Copilot to run the tests. There is a `/tests` command that you can directly run from Copilot Chat or by selecting the piece of code you want to create tests for and using the Copilot inline feature.
 
 ### Exercise 5: Create a Dockerfile
 
@@ -147,23 +147,64 @@ Now that we have the new functionality added and tests covering it, lets create 
 
 - Build the image using Copilot and expose the port 3000.
 
-### Exercise 6: Customize Copilot with repo, path, and file-type instructions
+### Exercise 6: Customize Copilot (repo, path, file)
 
-- Configure Copilot Custom Instructions to guide suggestions for this project:
-  - Repo-level: prefer Node 18+, keep endpoints small and pure, use axios for HTTP, follow the current coding style of nodeserver.js, and write tests with mocha/chai.
-  - Path-based (exercisefiles/node/**): maintain port 3000, reuse existing endpoint names, keep error handling consistent, and avoid introducing heavy frameworks.
-  - File-type rules:
-    - .js files: prefer consistent import style used in nodeserver.js, add JSDoc comments, and avoid global state.
-    - dockerfile: use a slim base image, set NODE_ENV=production, and expose port 3000.
-- Apply your instructions:
-  - In Copilot Chat, ask Copilot to "explain nodeserver.js given our custom instructions" and then "suggest a small refactor for one endpoint consistent with the instructions."
-  - In test.js, ask Copilot to "add one new mocha test for an existing endpoint, aligned with our custom instructions."
+This exercise demonstrates how Copilot Custom Instructions work together at various scopes.
 
-  > **_NOTE:_** Custom Instructions influence Copilot's behaviors globally and per scope. Keep them concise and specific.
+1) Create a repo-level instructions file (broad and language-agnostic)
+- Location: `.github/copilot-instructions.md` (create the `.github/` folder if needed)
+- Paste this content:
 
-- Success criteria:
-  - Suggestions honor the chosen style and structure.
-  - The added test follows mocha style and naming consistent with the repository.
+```md
+# Copilot Instructions (Repository)
+- Respect existing language/framework choices across the repo.
+- Prefer small, readable functions; clear names; minimal dependencies.
+- Add brief docstrings/comments for new code.
+- Write tests using existing tooling in each folder when present.
+- Avoid secrets and hardcoded credentials; prefer environment variables.
+- When unsure, follow conventions shown in nearby files and READMEs.
+```
+
+2) Add path-specific instructions for this Node exercises folder
+- Location: `.github/instructions/node.instructions.md`
+- Paste this content:
+
+```md
+---
+applyTo: "exercisefiles/node/**"
+---
+
+- Target port: 3000 for servers in this folder.
+- Use axios for HTTP calls; handle errors with try/catch.
+- Prefer async/await and module exports; avoid global state.
+- Tests: mocha + chai; name tests descriptively.
+- For visibility, include a top comment: "Exercise 6: Node path rules" in new or edited files here.
+```
+
+3) Add file-type targeted instructions for `javascript` files
+- Location: `.github/instructions/javascript.instructions.md`
+- Paste this content:
+
+```md
+---
+applyTo: "**/*.js"
+---
+
+- Keep endpoints small and pure; reuse existing patterns in this file.
+- Prefer async/await; avoid callback-style code.
+- Add a brief JSDoc for any new endpoint.
+- Include a visible comment at the top: "Exercise 6: nodeserver file rules".
+```
+
+Try it out
+- Open `exercisefiles/node/nodeserver.js` and in Copilot Chat ask: "Add a tiny health-check endpoint"
+- Open `exercisefiles/node/test.js` and ask: "Add one mocha/chai test for the health-check endpoint"
+
+Notes and docs
+- When multiple scopes apply, Copilot combines them (personal > org > repo; repo + path + file for this workspace).
+- GitHub Docs:
+  - Repository instructions: https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions
+  - Path/file targeting via `applyTo`: https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions#creating-path-specific-custom-instructions
 
 ### Exercise 7: Create and use a Prompt File for this Node folder
 
