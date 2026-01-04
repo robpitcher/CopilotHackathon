@@ -84,7 +84,7 @@ The requests that the server must attend are the following:
   * Make a call to the movie api  and return a list of movies of that director using axios
   * Return the full list of movies
 
-  > **_NOTE:_** This will require to browse to https://www.omdbapi.com/apikey.aspx and request a FREE API Key
+  > **_NOTE:_** This will require to browse to https://www.omdbapi.com/apikey.aspx and request a FREE API Key. Don't forget to click the API activation link in the email!
 
 
 - **/ParseUrl**:
@@ -99,7 +99,7 @@ The requests that the server must attend are the following:
   * Get the list of files in the current directory
   * Return the list of files
 
-  > **_NOTE:_** Copilot can also help with these kind of commands locally. The feature is called Copilot in the CLI. You can learn more information about this feature [here](https://docs.github.com/en/copilot/github-copilot-in-the-cli/about-github-copilot-in-the-cli).
+  > **_NOTE:_** Copilot can also help with these kind of commands locally. The feature is called Copilot in the CLI. You can learn more information about this feature [here](https://docs.github.com/en/copilot/github-copilot-in-the-cli/about-github-copilot-in-the-cli). You can run `copilot` in your terminal to install the GitHub Copilot CLI.
 
 
 - **/GetFullTextFile**:
