@@ -1,3 +1,5 @@
+// Exercise 6: Node path rules
+// Exercise 6: nodeserver file rules
 /**
  * Simple Node.js HTTP server exposing multiple utility endpoints.
  *
@@ -339,6 +341,15 @@ const server = http.createServer((req, res) => {
         const randomCountry = europeanCountries[randomIndex];
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(randomCountry));
+    }
+    // Health-check endpoint
+    else if (pathname === '/health' || pathname === '/healthz') {
+        /**
+         * GET /health or /healthz
+         * Simple liveness probe; returns 'ok' when the server is running.
+         */
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('ok');
     }
     // Fallback: unmatched path
     else {
