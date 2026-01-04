@@ -1,17 +1,59 @@
-// write a nodejs server that will expose a method call "get" that will return the value of the key passed in the query string
-// example: http://localhost:3000/get?key=hello
-// if the key is not passed, return "key not passed"
-// if the key is passed, return "hello" + key
-// if the url has other methods, return "method not supported"
-// when server is listening, log "server is listening on port 3000"
+/**
+ * Simple Node.js HTTP server exposing multiple utility endpoints.
+ *
+ * Endpoints:
+ * - GET /get?key=VALUE
+ *   -> 200 'hello VALUE' | 400 'key not passed'
+ *
+ * - GET /DaysBetweenDates?date1=YYYY-MM-DD&date2=YYYY-MM-DD
+ *   -> 200 '<integer days>' | 400 'date1 and date2 parameters are required'
+ *
+ * - GET /Validatephonenumber?phoneNumber=+34#########
+ *   -> 200 'valid' | 200 'invalid' | 400 'phoneNumber parameter is required'
+ *
+ * - GET /ValidateSpanishDNI?dni=########X
+ *   -> 200 'valid' | 200 'invalid' | 400 'dni parameter is required'
+ *
+ * - GET /ReturnColorCode?color=NAME
+ *   -> 200 '<hex code>' | 404 'color not found' | 400 'color parameter is required'
+ *   Reads colors from colors.json in the same directory.
+ *
+ * - GET /TellMeAJoke
+ *   -> 200 JSON { setup, punchline } | 500 on external API errors
+ *
+ * - GET /MoviesByDirector?director=NAME
+ *   -> 200 JSON array of movie details | 404 if none | 400 if missing
+ *   Uses OMDb API (apikey required). Filters movies by director.
+ *
+ * - GET /ParseUrl?someurl=ENCODED_URL
+ *   -> 200 returns the host component | 400 'invalid url' or missing param
+ *
+ * - GET /GetFullTextFile
+ *   -> 200 text: lines from sample.txt that contain 'Fusce'
+ *
+ * - GET /GetLineByLinefromtTextFile
+ *   -> 200 JSON array: lines with 'Fusce' (streamed processing)
+ *
+ * - GET /CalculateMemoryConsumption
+ *   -> 200 string: heapUsed in GB (toFixed(2))
+ *
+ * - GET /RandomEuropeanCountry
+ *   -> 200 JSON { country, isoCode }
+ *
+ * Unknown paths -> 404 'method not supported'
+ * On start -> Logs 'server is listening on port 3000'
+ */
 
-const http = require('http');
-const url = require('url');
-const fs = require('fs');
-const axios = require('axios');
+// Node core/external deps used by various endpoints
+const http = require('http');     // HTTP server
+const url = require('url');       // URL parsing (query/pathname)
+const fs = require('fs');         // File I/O for colors.json/sample.txt
+const axios = require('axios');   // HTTP client for external APIs
 
+// OMDb API key placeholder for /MoviesByDirector. Replace or inject via env.
 const OMDB_API_KEY = 'YOUR_API_KEY'; // Replace with your actual API key
 
+// Static reference data for /RandomEuropeanCountry
 const europeanCountries = [
     { country: 'Albania', isoCode: 'AL' },
     { country: 'Andorra', isoCode: 'AD' },
@@ -61,10 +103,12 @@ const europeanCountries = [
 ];
 
 const server = http.createServer((req, res) => {
+    // Parse pathname and query parameters from the request URL
     const parsedUrl = url.parse(req.url, true);
     const pathname = parsedUrl.pathname;
     const query = parsedUrl.query;
 
+    // /get: echo 'hello <key>' if key provided
     if (pathname === '/get') {
         const key = query.key;
         if (key) {
@@ -75,6 +119,7 @@ const server = http.createServer((req, res) => {
             res.end('key not passed');
         }
     }
+    // /DaysBetweenDates: compute absolute difference in days between two dates
     else if (pathname === '/DaysBetweenDates') {
         const date1 = query.date1;
         const date2 = query.date2;
@@ -90,6 +135,7 @@ const server = http.createServer((req, res) => {
             res.end('date1 and date2 parameters are required');
         }
     }
+    // /Validatephonenumber: validate Spanish numbers (+34 + 9 digits)
     else if (pathname === '/Validatephonenumber') {
         const phoneNumber = query.phoneNumber;
         if (phoneNumber) {
@@ -107,6 +153,7 @@ const server = http.createServer((req, res) => {
             res.end('phoneNumber parameter is required');
         }
     }
+    // /ValidateSpanishDNI: validate DNI checksum letter
     else if (pathname === '/ValidateSpanishDNI') {
         const dni = query.dni;
         if (dni) {
@@ -133,6 +180,7 @@ const server = http.createServer((req, res) => {
             res.end('dni parameter is required');
         }
     }
+    // /ReturnColorCode: look up color hex code from colors.json
     else if (pathname === '/ReturnColorCode') {
         const color = query.color;
         if (color) {
@@ -157,6 +205,7 @@ const server = http.createServer((req, res) => {
             res.end('color parameter is required');
         }
     }
+    // /TellMeAJoke: fetch random joke from public API
     else if (pathname === '/TellMeAJoke') {
         axios.get('https://official-joke-api.appspot.com/random_joke')
             .then(response => {
@@ -172,6 +221,7 @@ const server = http.createServer((req, res) => {
                 res.end('Error fetching joke');
             });
     }
+    // /MoviesByDirector: OMDb search + detail fetch to filter by director
     else if (pathname === '/MoviesByDirector') {
         const director = query.director;
         if (director) {
@@ -204,6 +254,7 @@ const server = http.createServer((req, res) => {
             res.end('director parameter is required');
         }
     }
+    // /ParseUrl: parse provided URL and return host (domain[:port])
     else if (pathname === '/ParseUrl') {
         const someurl = query.someurl;
         if (someurl) {
@@ -228,6 +279,7 @@ const server = http.createServer((req, res) => {
             res.end('someurl parameter is required');
         }
     }
+    // /GetFullTextFile: read entire file and filter lines containing 'Fusce'
     else if (pathname === '/GetFullTextFile') {
         fs.readFile(__dirname + '/sample.txt', 'utf8', (err, data) => {
             if (err) {
@@ -240,6 +292,7 @@ const server = http.createServer((req, res) => {
             res.end(lines.join('\n'));
         });
     }
+    // /GetLineByLinefromtTextFile: stream file line-by-line and collect matches
     else if (pathname === '/GetLineByLinefromtTextFile') {
         const readFileLineByLine = () => {
             return new Promise((resolve, reject) => {
@@ -273,24 +326,29 @@ const server = http.createServer((req, res) => {
                 res.end('Error reading file');
             });
     }
+    // /CalculateMemoryConsumption: report heap usage in GB
     else if (pathname === '/CalculateMemoryConsumption') {
         const memoryUsage = process.memoryUsage();
         const memoryInGB = (memoryUsage.heapUsed / (1024 * 1024 * 1024)).toFixed(2);
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(memoryInGB);
     }
+    // /RandomEuropeanCountry: return a random country from static list
     else if (pathname === '/RandomEuropeanCountry') {
         const randomIndex = Math.floor(Math.random() * europeanCountries.length);
         const randomCountry = europeanCountries[randomIndex];
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(randomCountry));
     }
+    // Fallback: unmatched path
     else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('method not supported');
     }
 });
 
+// Start HTTP server on port 3000
 server.listen(3000, () => {
+    // Logs
     console.log('server is listening on port 3000');
 });
