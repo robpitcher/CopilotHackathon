@@ -6,22 +6,13 @@ description: 'Help new team members onboard with a phased plan and suggestions f
 
 # Create My Onboarding Plan
 
-I'm a new team member joining ${input:team:Team or project name} and I need help creating a structured onboarding plan.
+I'm a new team member working with this repository's ${input:language:Language or persona} exercise files and I need help getting started.
 
 My background: ${input:background:Briefly describe your experience level - new to tech, experienced developer new to this stack, etc.}
 
-Please create a personalized phased onboarding plan that includes the following phases.
+Please create a personalized onboarding plan to help me ramp up effectively. The plan should include:
 
-## Phase 1 - Foundation
-
-Environment setup with step-by-step instructions and troubleshooting tips, plus identifying the most important documentation to read first
-
-## Phase 2 - Exploration
-
-Codebase discovery starting with README files, running existing tests/scripts to understand workflows, and finding beginner-friendly first tasks like documentation improvements. If possible, find me specific open issues or tasks that are suitable for my background.
-
-## Phase 3 - Integration
-
-Learning team processes, making first contributions, and building confidence through early wins
-
-For each phase, break down complex topics into manageable steps, recommend relevant resources, provide concrete next steps, and suggest hands-on practice over just reading theory.
+1. A phased approach to learning the codebase and tools over the first 30, 60, and 90 days.
+2. Suggested first tasks or issues I can work on to get familiar with the project.
+3. Key resources or documentation I should review.
+4. Any recommended team members I should connect with for guidance.
