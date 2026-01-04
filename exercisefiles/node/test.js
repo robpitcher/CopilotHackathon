@@ -10,8 +10,7 @@ const server = require('./nodeserver');
 
 describe('Node Server', () => {
     it('should return "key not passed" if key is not passed', (done) => {
-        http
-        .get('http://localhost:3000/get' , (res) => {
+        http.get('http://localhost:3000/get', (res) => {
             let data = '';
             res.on('data', (chunk) => {
                 data += chunk;
@@ -23,18 +22,145 @@ describe('Node Server', () => {
         });
     });
 
-    //add test to check get when key is equal to world
+    // Test get when key is equal to world
+    it('should return "hello world" when key is world', (done) => {
+        http.get('http://localhost:3000/get?key=world', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(data, 'hello world');
+                done();
+            });
+        });
+    });
 
-    //add test to check validatephoneNumber
+    // Test validatephoneNumber with valid Spanish number
+    it('should return "valid" for valid Spanish phone number', (done) => {
+        http.get('http://localhost:3000/Validatephonenumber?phoneNumber=%2B34612345678', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(data, 'valid');
+                done();
+            });
+        });
+    });
 
-    //write test to validate validateSpanishDNI
-   
+    // Test validatephoneNumber with invalid number
+    it('should return "invalid" for invalid phone number', (done) => {
+        http.get('http://localhost:3000/Validatephonenumber?phoneNumber=123456', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(data, 'invalid');
+                done();
+            });
+        });
+    });
 
-    //write test for returnColorCode red should return code #FF0000
+    // Test validateSpanishDNI with valid DNI
+    it('should return "valid" for valid Spanish DNI', (done) => {
+        http.get('http://localhost:3000/ValidateSpanishDNI?dni=12345678Z', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(data, 'valid');
+                done();
+            });
+        });
+    });
 
+    // Test validateSpanishDNI with invalid DNI
+    it('should return "invalid" for invalid Spanish DNI', (done) => {
+        http.get('http://localhost:3000/ValidateSpanishDNI?dni=12345678A', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(data, 'invalid');
+                done();
+            });
+        });
+    });
 
-   //write test for daysBetweenDates
+    // Test returnColorCode for red
+    it('should return "#FF0000" for color red', (done) => {
+        http.get('http://localhost:3000/ReturnColorCode?color=red', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(data, '#FF0000');
+                done();
+            });
+        });
+    });
 
+    // Test daysBetweenDates
+    it('should return correct days between two dates', (done) => {
+        http.get('http://localhost:3000/DaysBetweenDates?date1=2024-01-01&date2=2024-01-10', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(data, '9');
+                done();
+            });
+        });
+    });
 
+    // Test ParseUrl
+    it('should return host from parsed URL', (done) => {
+        http.get('http://localhost:3000/ParseUrl?someurl=' + encodeURIComponent('https://example.com:8080/path'), (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(data, 'example.com:8080');
+                done();
+            });
+        });
+    });
 
+    // Test CalculateMemoryConsumption
+    it('should return memory consumption as a number string', (done) => {
+        http.get('http://localhost:3000/CalculateMemoryConsumption', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.ok(!isNaN(parseFloat(data)));
+                done();
+            });
+        });
+    });
+
+    // Test RandomEuropeanCountry
+    it('should return a random European country with country and isoCode', (done) => {
+        http.get('http://localhost:3000/RandomEuropeanCountry', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                const result = JSON.parse(data);
+                assert.ok(result.country);
+                assert.ok(result.isoCode);
+                done();
+            });
+        });
+    });
 });
