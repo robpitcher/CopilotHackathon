@@ -242,21 +242,35 @@ Please create a personalized onboarding plan to help me ramp up effectively. The
 Stretch ideas
 - Add another prompt (e.g., `.github/prompts/release-notes.prompt.md`) to generate release notes from merged PRs.
 
-### Exercise 8: Use Copilot MCP tools to augment the Node exercises
+### Exercise 8: Automate GitHub Workflows with MCP (Create an Issue)
 
-- Configure Copilot MCP tools available in your environment (e.g., filesystem and HTTP).
-- Filesystem tool:
-  - Ask Copilot to use the MCP filesystem tool to read exercisefiles/node/colors.json and summarize how "/ReturnColorCode" should behave.
-  - Request a step-by-step plan to handle missing colors and invalid inputs.
-- HTTP tool:
-  - Use the MCP HTTP tool to fetch a sample response from the joke API (https://official-joke-api.appspot.com/random_joke) and discuss how to integrate retry/backoff in the endpoint.
-  - For the movies endpoint, outline an HTTP call flow including API key usage for OMDB and basic error handling.
+Configure the GitHub MCP server and use Copilot Chat to create, list, comment on, and close issues in this repository without leaving the editor.
 
-  > **_NOTE:_** MCP tools bring external resources into chat context. Validate sample outputs and avoid committing secrets.
+Create `.vscode/mcp.json` in the repo root and add the following content:
 
-- Success criteria:
-  - Copilot produces accurate summaries from colors.json.
-  - Copilot proposes clear HTTP handling patterns aligned with axios and the existing endpoint designs.
+```json
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    }
+  }
+}
+```
+
+Steps
+
+- Create an issue via Copilot Chat:
+  - Prompt: "Using the 'github' MCP server, create a new issue in <owner>/<repo> titled 'Exercise 8: MCP issue demo' with body 'Please verify MCP can create issues from VS Code.' Add label 'exercise-8' and assign to me if possible."
+
+- Verify the result:
+  - Copilot should return an issue URL.
+  - Alternatively, ask: "List open issues in <owner>/<repo> with label 'exercise-8'."
+
+- Update the issue:
+  - Add a comment: "Comment on issue #<number>: 'Thanks, this was created via MCP.'"
+  - Close it: "Close issue #<number>."
 
 ### Exercise 9: Run the Copilot coding agent asynchronously to propose improvements
 
