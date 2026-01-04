@@ -201,12 +201,6 @@ Try it out
 - Open `exercisefiles/node/nodeserver.js` and in Copilot Chat ask: "Add a tiny health-check endpoint"
 - Open `exercisefiles/node/test.js` and ask: "Add one mocha test for the health-check endpoint"
 
-Notes and docs
-- When multiple scopes apply, Copilot combines them (personal > org > repo; repo + path + file for this workspace).
-- GitHub Docs:
-  - Repository instructions: https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions
-  - Path/file targeting via `applyTo`: https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions#creating-path-specific-custom-instructions
-
 ### Exercise 7: Create and use a Prompt File for this Node folder
 
 - Add a prompt file dedicated to these exercises (for example: exercisefiles/node/prompt-exercises.md).
