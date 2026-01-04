@@ -7,14 +7,6 @@ function handleParseUrl(query, res) {
     if (someurl) {
         try {
             const parsedSomeUrl = new URL(someurl);
-            const result = {
-                protocol: parsedSomeUrl.protocol,
-                host: parsedSomeUrl.host,
-                port: parsedSomeUrl.port || '',
-                path: parsedSomeUrl.pathname,
-                querystring: parsedSomeUrl.search,
-                hash: parsedSomeUrl.hash
-            };
             res.writeHead(200, { 'Content-Type': 'text/plain' });
             res.end(parsedSomeUrl.host);
         } catch (error) {
