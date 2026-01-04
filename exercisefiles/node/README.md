@@ -174,11 +174,12 @@ This exercise demonstrates how Copilot Custom Instructions work together at vari
 applyTo: "exercisefiles/node/**"
 ---
 
-- Target port: 4000 for servers in this folder.
+- Target port: 3000 for servers in this folder.
 - Use axios for HTTP calls; handle errors with try/catch.
 - Prefer async/await and module exports; avoid global state.
-- Tests: mocha + chai; name tests descriptively.
-- For visibility, include a top comment: "Exercise 6: Node path rules" in new or edited files here.
+- Tests: mocha; name tests descriptively.
+- Add tests to the existing `test.js` file.
+- Include a top comment: "Exercise 6: Node path rules" in new or edited files here.
 ```
 
 3) Add file-type targeted instructions for `javascript` files
@@ -198,7 +199,7 @@ applyTo: "**/*.js"
 
 Try it out
 - Open `exercisefiles/node/nodeserver.js` and in Copilot Chat ask: "Add a tiny health-check endpoint"
-- Open `exercisefiles/node/test.js` and ask: "Add one mocha/chai test for the health-check endpoint"
+- Open `exercisefiles/node/test.js` and ask: "Add one mocha test for the health-check endpoint"
 
 Notes and docs
 - When multiple scopes apply, Copilot combines them (personal > org > repo; repo + path + file for this workspace).
