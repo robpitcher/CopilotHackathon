@@ -6,6 +6,7 @@
 
 const assert = require('assert');
 const http = require('http');
+const axios = require('axios');
 const server = require('./nodeserver');
 
 describe('Node Server', () => {
@@ -163,4 +164,28 @@ describe('Node Server', () => {
             });
         });
     });
+});
+
+// Exercise 6: Health-check endpoint
+describe('Health-check endpoint', function () {
+  // Ensure server is listening before tests
+  before(function (done) {
+    if (server.listening) return done();
+    server.once('listening', done);
+  });
+
+  it('GET /health should return ok', async function () {
+    try {
+      const res = await axios.get('http://localhost:3000/health');
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.data, 'ok');
+    } catch (err) {
+      assert.fail(`Request failed: ${err.message}`);
+    }
+  });
+
+  // Clean up
+  after(function (done) {
+    server.close(done);
+  });
 });
