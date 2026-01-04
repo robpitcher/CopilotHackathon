@@ -149,7 +149,7 @@ Now that we have the new functionality added and tests covering it, lets create 
 
 ### Exercise 6: Customize Copilot (repo, path, file)
 
-This exercise demonstrates how Copilot Custom Instructions work together at various scopes.
+This exercise demonstrates how Copilot Custom Instructions work together at various scopes. The instructions below are examples, feel free to modify these instructions to see the effects.
 
 1) Create a repo-level instructions file (broad and language-agnostic)
 - Location: `.github/copilot-instructions.md` (create the `.github/` folder if needed)
@@ -174,7 +174,7 @@ This exercise demonstrates how Copilot Custom Instructions work together at vari
 applyTo: "exercisefiles/node/**"
 ---
 
-- Target port: 3000 for servers in this folder.
+- Target port: 4000 for servers in this folder.
 - Use axios for HTTP calls; handle errors with try/catch.
 - Prefer async/await and module exports; avoid global state.
 - Tests: mocha + chai; name tests descriptively.
