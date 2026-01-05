@@ -164,6 +164,57 @@ describe('Node Server', () => {
             });
         });
     });
+
+    // Test TellMeAJoke
+    it('should return a joke with setup and punchline or error', (done) => {
+        http.get('http://localhost:3000/TellMeAJoke', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                if (res.statusCode === 200) {
+                    const result = JSON.parse(data);
+                    assert.ok(result.setup);
+                    assert.ok(result.punchline);
+                } else if (res.statusCode === 500) {
+                    assert.equal(data, 'Error fetching joke');
+                }
+                done();
+            });
+        });
+    });
+
+    // Test GetFullTextFile
+    it('should return lines containing "Fusce" from sample.txt', (done) => {
+        http.get('http://localhost:3000/GetFullTextFile', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.ok(data.includes('Fusce'));
+                done();
+            });
+        });
+    });
+
+    // Test GetLineByLinefromtTextFile
+    it('should return JSON array of lines containing "Fusce"', (done) => {
+        http.get('http://localhost:3000/GetLineByLinefromtTextFile', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                const result = JSON.parse(data);
+                assert.ok(Array.isArray(result));
+                assert.ok(result.length > 0);
+                assert.ok(result[0].includes('Fusce'));
+                done();
+            });
+        });
+    });
 });
 
 // Exercise 6: Health-check endpoint
