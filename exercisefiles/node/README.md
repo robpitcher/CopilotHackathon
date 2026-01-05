@@ -291,3 +291,9 @@ Steps
 
   > **_NOTE:_** Custom agents encapsulate preferences and tools so you get consistent guidance without repeating context every time.
 -->
+
+
+<!--
+Exercise 11?
+Copilot setup steps tutorial to customize coding agent
+-->
