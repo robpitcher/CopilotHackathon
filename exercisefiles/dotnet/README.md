@@ -167,6 +167,158 @@ docker build -t dotnetapp .
 docker run -d -p 8080:80 --name dotnetapp dotnetapp
 ```
 
+### Exercise 6: Customize Copilot (repo, path, file)
+
+This exercise demonstrates how Copilot Custom Instructions work together at various scopes. The instructions below are examples, feel free to modify these instructions to see the effects.
+
+1) Create a repo-level instructions file (broad and language-agnostic)
+- Location: `.github/copilot-instructions.md` (create the `.github/` folder if needed)
+- Paste this content:
+
+```md
+# Copilot Instructions (Repository)
+- Respect existing language/framework choices across the repo.
+- Prefer small, readable functions; clear names; minimal dependencies.
+- Add brief docstrings/comments for new code.
+- Write tests using existing tooling in each folder when present.
+- Avoid secrets and hardcoded credentials; prefer environment variables.
+- When unsure, follow conventions shown in nearby files and READMEs.
+```
+
+2) Add path-specific instructions for this .NET exercises folder
+- Location: `.github/instructions/dotnet.instructions.md`
+- Paste this content:
+
+```md
+---
+applyTo: "exercisefiles/dotnet/**"
+---
+
+- Target port: 8080 for servers in this folder.
+- Use HttpClient with IHttpClientFactory for HTTP calls; handle errors with try/catch.
+- Prefer async/await and minimal API patterns; avoid static state.
+- Tests: xUnit; name tests descriptively.
+- Add tests to the existing `IntegrationTests.cs` file.
+- Include a top comment: "Exercise 6: .NET path rules" in new or edited files here.
+```
+
+3) Add file-type targeted instructions for `csharp` files
+- Location: `.github/instructions/csharp.instructions.md`
+- Paste this content:
+
+```md
+---
+applyTo: "**/*.cs"
+---
+
+- Keep endpoints small and pure; reuse existing patterns in this file.
+- Prefer async/await; avoid blocking calls.
+- Add XML documentation comments for any new endpoint.
+- Include a visible comment at the top: "Exercise 6: Program.cs file rules".
+```
+
+4) Try it out
+- Open `exercisefiles/dotnet/MinimalAPI/Program.cs` and in Copilot Chat ask: "Add a tiny health-check endpoint"
+- Open `exercisefiles/dotnet/MinimalAPI.Tests/IntegrationTests.cs` and ask: "Add one xUnit test for the health-check endpoint"
+
+### Exercise 7: Add a Reusable Prompt to This Repo
+
+Create a repo-scoped, reusable prompt that anyone can invoke from Copilot Chat for consistent, repeatable results.
+
+1) Create the prompt library folder
+- Add a new folder: `.github/prompts/`
+
+2) Add the reusable prompt file
+- Create `.github/prompts/onboarding.prompt.md` with the content below:
+
+```md
+---
+agent: 'ask'
+model: 'GPT-5.1'
+description: 'Help new team members onboard with a phased plan and suggestions for first tasks.'
+---
+
+# Create My Onboarding Plan
+
+I'm a new team member working with this repository's ${input:language:Language or persona} exercise files and I need help getting started.
+
+My background: ${input:background:Briefly describe your experience level - new to tech, experienced developer new to this stack, etc.}
+
+Please create a personalized onboarding plan to help me ramp up effectively. The plan should include:
+
+1. A phased approach to learning the codebase and tools over the first 30, 60, and 90 days.
+2. Suggested first tasks or issues I can work on to get familiar with the project.
+3. Key resources or documentation I should review.
+4. Any recommended team members I should connect with for guidance.
+```
+
+3) Use the prompt from Copilot Chat
+- Open Copilot Chat and type `/onboarding language:dotnet background:new developer` and press enter.
+- Notice that the prompt switches to ASK mode with model GPT-5.1, as these were specified in the prompt file.
+
+4) Verify repeatability
+- Experiment re-running the prompt using one of the other languages or personas listed in `exercisefiles/` and/or changing your `background:`.
+
+#### Stretch ideas
+- Add another prompt (e.g., `.github/prompts/release-notes.prompt.md`) to generate release notes from merged PRs.
+
+### Exercise 8: Automate GitHub Workflows with MCP (Create an Issue)
+
+Configure the GitHub MCP server and use Copilot Chat to create, list, comment on, and close issues in this repository without leaving the editor.
+
+> **_NOTE:_** Ensure issues are enabled, located under the features heading in your repository settings.
+
+
+
+#### Steps
+
+- Install GitHub MCP Server:
+
+  - [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=github&config=%7B%22type%22%3A%20%22http%22%2C%22url%22%3A%20%22https%3A%2F%2Fapi.githubcopilot.com%2Fmcp%2F%22%7D)
+
+- Create an issue via Copilot Chat:
+  - Prompt: "Using the 'github' MCP server, create a new issue in <owner>/<repo> (replace <owner>/<repo> with your repository, for example `octocat/hello-world`) titled 'Exercise 8: MCP issue demo' with body 'Please verify MCP can create issues from VS Code.' Assign to me if possible."
+
+- Verify the result:
+  - Copilot should return an issue URL.
+  - Alternatively, ask: "List open issues in <owner>/<repo> with label 'exercise-8'."
+
+- Update the issue:
+  - Add a comment: "Comment on issue #<number>: 'Thanks, this was created via MCP.'"
+  - Close it: "Close issue #<number>."
+
+### Exercise 9: Run the Copilot coding agent asynchronously
+
+- In VSCode, start a Copilot coding agent task that works asynchronously:
+  - Request: "Refactor Program.cs by extracting endpoints into small modules and add missing tests in IntegrationTests.cs. Keep behavior identical. Ensure all tests are passing"
+  - Instead of pressing <kbd>Enter</kbd> to send the chat message to GitHub Copilot, click the arrow in the bottom right of the chat window and choose continue in cloud:
+  ![Task Cloud Agent](../../Resources/task-cloud-agent.png)
+- While the agent runs:
+  - Continue local work and periodically check the agent's progress and PR status.
+  - Review the PR once available and ask Copilot Chat "/explain" on the diff to understand the changes.
+
+  > **_NOTE:_** The coding agent operates asynchronously and may iterate. Provide clear constraints and accept/reject changes via normal PR review.
+
+
+### Exercise 10: Create and use a custom agent tailored to this folder (Coming Soon)
+<!--
+- Define a custom agent specialized for exercisefiles/dotnet:
+  - Default context: exercisefiles/dotnet
+  - Tools: MCP filesystem and HTTP, Copilot Chat commands (/tests, /fix, /explain)
+  - Behaviors: propose small changes with tests, respect custom instructions and prompt files, avoid secrets, and prefer HttpClient with IHttpClientFactory for HTTP calls with error handling.
+- Use your custom agent:
+  - Ask it to "review Program.cs for input validation gaps and propose minimal fixes with corresponding xUnit tests."
+  - Ask it to "suggest documentation updates in README for new endpoints, consistent with Exercises 1–5."
+
+  > **_NOTE:_** Custom agents encapsulate preferences and tools so you get consistent guidance without repeating context every time.
+-->
+
+
+<!--
+Exercise 11?
+Copilot setup steps tutorial to customize coding agent
+-->
+
 ## Summary
 
 With the previous exercises you have gone through some common activities that developers usually run:
