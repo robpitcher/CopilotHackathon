@@ -318,15 +318,3 @@ Configure the GitHub MCP server and use Copilot Chat to create, list, comment on
 Exercise 11?
 Copilot setup steps tutorial to customize coding agent
 -->
-
-## Summary
-
-With the previous exercises you have gone through some common activities that developers usually run:
-- Create new features in the code
-- Work with external APIs
-- Create documentation
-- Create tests
-
-However, there are many other things that Copilot can help you with. Feel free to explore other slash command in the Copilot chat like:
-- `/fix`: to fix the problems in your code
-- `/explain`: for Copilot to explain you what the code does
