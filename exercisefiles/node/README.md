@@ -197,7 +197,7 @@ applyTo: "**/*.js"
 - Include a visible comment at the top: "Exercise 6: nodeserver file rules".
 ```
 
-Try it out
+4) Try it out
 - Open `exercisefiles/node/nodeserver.js` and in Copilot Chat ask: "Add a tiny health-check endpoint"
 - Open `exercisefiles/node/test.js` and ask: "Add one mocha test for the health-check endpoint"
 
