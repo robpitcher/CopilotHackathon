@@ -239,7 +239,7 @@ Please create a personalized onboarding plan to help me ramp up effectively. The
 4) Verify repeatability
 - Experiment re-running the prompt using one of the other languages or personas listed in `exercisefiles/` and/or changing your `background:`.
 
-Stretch ideas
+#### Stretch ideas
 - Add another prompt (e.g., `.github/prompts/release-notes.prompt.md`) to generate release notes from merged PRs.
 
 ### Exercise 8: Automate GitHub Workflows with MCP (Create an Issue)
