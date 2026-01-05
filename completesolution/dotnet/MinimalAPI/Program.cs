@@ -44,7 +44,7 @@ app.MapGet("/daysbetweendates", (DateTime startdate, DateTime enddate) => (endda
 /// </summary>
 /// <param name="phonenumber">The phone number to validate (e.g., +34666777888)</param>
 /// <returns>True if valid, False otherwise</returns>
-app.MapGet("/validatephonenumber", (string phonenumber) => Regex.IsMatch(phonenumber, @"^\+\d{11,}$").ToString())
+app.MapGet("/validatephonenumber", (string phonenumber) => Regex.IsMatch(phonenumber, @"^\+\d{10,15}$").ToString())
     .WithName("ValidatePhoneNumber")
     .WithTags("Validation");
 
