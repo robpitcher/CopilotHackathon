@@ -267,20 +267,16 @@ Steps
   - Add a comment: "Comment on issue #<number>: 'Thanks, this was created via MCP.'"
   - Close it: "Close issue #<number>."
 
-### Exercise 9: Run the Copilot coding agent asynchronously to propose improvements
+### Exercise 9: Run the Copilot coding agent asynchronously
 
-- In GitHub, start a Copilot coding agent task that works asynchronously:
-  - Request: "Refactor nodeserver.js by extracting endpoints into small modules and add missing tests in test.js. Keep behavior identical. Propose a Dockerfile improvement for a smaller image."
-  - Ask the agent to open a PR in a new branch (e.g., node-refactor) and include a summary of changes, risks, and test coverage.
+- In VSCode, start a Copilot coding agent task that works asynchronously:
+  - Request: "Refactor nodeserver.js by extracting endpoints into small modules and add missing tests in test.js. Keep behavior identical. Ensure all tests are passing"
+  - Instead of pressing <kbd>Enter</kbd> to send the chat message to GitHub Copilot, click the arrow in the bottom right of the chat window and choose continue in cloud.
 - While the agent runs:
   - Continue local work and periodically check the agent's progress and PR status.
   - Review the PR once available and ask Copilot Chat "/explain" on the diff to understand the changes.
 
   > **_NOTE:_** The coding agent operates asynchronously and may iterate. Provide clear constraints and accept/reject changes via normal PR review.
-
-- Success criteria:
-  - A PR appears with small, readable refactors, added tests, and a modest Dockerfile improvement.
-  - Explanations in the PR are clear and align with repository conventions.
 
 ### Exercise 10: Create and use a custom agent tailored to this folder
 
@@ -293,19 +289,3 @@ Steps
   - Ask it to "suggest documentation updates in README for new endpoints, consistent with Exercises 1–5."
 
   > **_NOTE:_** Custom agents encapsulate preferences and tools so you get consistent guidance without repeating context every time.
-
-- Success criteria:
-  - The agent produces actionable, scoped suggestions aligned with the established style.
-  - Proposed tests and docs fit the existing exercise pattern.
-
-## Summary
-
-With the previous exercises you have gone through some common activities that developers usually run:
-- Create new features in the code
-- Work with external APIs
-- Create documentation
-- Create tests
-
-However, there are many other things that Copilot can help you with. Feel free to explore other slash command in the Copilot chat like:
-- `/fix`: to fix the problems in your code
-- `/explain`: for Copilot to explain you what the code does
