@@ -271,7 +271,8 @@ Steps
 
 - In VSCode, start a Copilot coding agent task that works asynchronously:
   - Request: "Refactor nodeserver.js by extracting endpoints into small modules and add missing tests in test.js. Keep behavior identical. Ensure all tests are passing"
-  - Instead of pressing <kbd>Enter</kbd> to send the chat message to GitHub Copilot, click the arrow in the bottom right of the chat window and choose continue in cloud.
+  - Instead of pressing <kbd>Enter</kbd> to send the chat message to GitHub Copilot, click the arrow in the bottom right of the chat window and choose continue in cloud:
+  ![Task Cloud Agent](../../Resources/task-cloud-agent.png)
 - While the agent runs:
   - Continue local work and periodically check the agent's progress and PR status.
   - Review the PR once available and ask Copilot Chat "/explain" on the diff to understand the changes.
