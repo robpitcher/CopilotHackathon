@@ -250,7 +250,7 @@ Configure the GitHub MCP server and use Copilot Chat to create, list, comment on
 
 
 
-Steps
+#### Steps
 
 - Install GitHub MCP Server:
 
