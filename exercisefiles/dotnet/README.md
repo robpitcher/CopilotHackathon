@@ -214,7 +214,7 @@ applyTo: "**/*.cs"
 - Keep endpoints small and pure; reuse existing patterns in this file.
 - Prefer async/await; avoid blocking calls.
 - Add XML documentation comments for any new endpoint.
-- Include a visible comment at the top: "Exercise 6: Program.cs file rules".
+- Include a visible comment at the top: "Exercise 6: C# file rules".
 ```
 
 4) Try it out
