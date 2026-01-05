@@ -278,8 +278,9 @@ Steps
 
   > **_NOTE:_** The coding agent operates asynchronously and may iterate. Provide clear constraints and accept/reject changes via normal PR review.
 
-### Exercise 10: Create and use a custom agent tailored to this folder
 
+### Exercise 10: Create and use a custom agent tailored to this folder (Coming Soon)
+<!--
 - Define a custom agent specialized for exercisefiles/node:
   - Default context: exercisefiles/node
   - Tools: MCP filesystem and HTTP, Copilot Chat commands (/tests, /fix, /explain)
@@ -289,3 +290,4 @@ Steps
   - Ask it to "suggest documentation updates in README for new endpoints, consistent with Exercises 1–5."
 
   > **_NOTE:_** Custom agents encapsulate preferences and tools so you get consistent guidance without repeating context every time.
+-->
