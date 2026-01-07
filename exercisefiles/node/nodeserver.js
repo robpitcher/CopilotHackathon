@@ -11,6 +11,61 @@ const url = require('url');        // For parsing URL query strings
 const fs = require('fs');          // For file system operations
 const readline = require('readline'); // For reading files line by line
 
+// Load colors from JSON file
+const colors = JSON.parse(fs.readFileSync('./colors.json', 'utf8'));
+
+/**
+ * Validates a US phone number in the format XXX-XXX-XXXX
+ * @param {string} phoneNumber - The phone number to validate
+ * @returns {boolean} - True if valid, false otherwise
+ */
+function validatePhoneNumber(phoneNumber) {
+    const regex = /^\d{3}-\d{3}-\d{4}$/;
+    return regex.test(phoneNumber);
+}
+
+/**
+ * Validates a Spanish DNI (8 digits followed by a letter)
+ * The letter is calculated based on the number
+ * @param {string} dni - The DNI to validate
+ * @returns {boolean} - True if valid, false otherwise
+ */
+function validateSpanishDNI(dni) {
+    const dniRegex = /^(\d{8})([A-Z])$/;
+    const match = dni.match(dniRegex);
+    if (!match) return false;
+    
+    const number = parseInt(match[1], 10);
+    const letter = match[2];
+    const letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
+    const expectedLetter = letters[number % 23];
+    
+    return letter === expectedLetter;
+}
+
+/**
+ * Returns the hex color code for a given color name
+ * @param {string} colorName - The name of the color
+ * @returns {string|null} - The hex code or null if not found
+ */
+function returnColorCode(colorName) {
+    const color = colors.find(c => c.color.toLowerCase() === colorName.toLowerCase());
+    return color ? color.code.hex : null;
+}
+
+/**
+ * Calculates the number of days between two dates
+ * @param {string} date1 - First date in YYYY-MM-DD format
+ * @param {string} date2 - Second date in YYYY-MM-DD format
+ * @returns {number} - Number of days between the dates
+ */
+function daysBetweenDates(date1, date2) {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    const diffTime = Math.abs(d2 - d1);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
 // Array of European countries with their ISO codes
 // Used by the /RandomEuropeanCountry endpoint
 const europeanCountries = [
@@ -81,7 +136,7 @@ const server = http.createServer((req, res) => {
         const key = query.key; // Extract 'key' from query parameters
         if (key) {
             res.writeHead(200, { 'Content-Type': 'text/plain' });
-            res.end('hello ' + key); // Return greeting with the key
+            res.end('Hello ' + key); // Return greeting with the key
         } else {
             res.writeHead(400, { 'Content-Type': 'text/plain' });
             res.end('key not passed'); // Return error if key is missing
@@ -141,7 +196,23 @@ const server = http.createServer((req, res) => {
     }
 });
 
-// Start the server on port 3000
-server.listen(3000, () => {
-    console.log('server is listening on port 3000'); // Log when server starts successfully
-});
+// Start the server on port 3000 (only when run directly, not when required as a module)
+if (require.main === module) {
+    server.listen(3000, () => {
+        console.log('server is listening on port 3000'); // Log when server starts successfully
+    });
+} else {
+    // When required as a module, start on 3000 if not already running
+    server.listen(3000).on('error', () => {
+        // Server already running, ignore
+    });
+}
+
+// Export functions for testing
+module.exports = {
+    validatePhoneNumber,
+    validateSpanishDNI,
+    returnColorCode,
+    daysBetweenDates,
+    server
+};
