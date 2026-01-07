@@ -95,4 +95,81 @@ describe('Node Server', () => {
             });
         });
     });
+
+    it('should calculate days between dates via HTTP endpoint', (done) => {
+        http.get('http://localhost:3000/DaysBetweenDates?date1=2024-01-01&date2=2024-01-11', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(res.statusCode, 200);
+                assert.equal(data, 'Days between 2024-01-01 and 2024-01-11: 10');
+                done();
+            });
+        });
+    });
+
+    it('should return error when dates are missing', (done) => {
+        http.get('http://localhost:3000/DaysBetweenDates?date1=2024-01-01', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(res.statusCode, 400);
+                assert.equal(data, 'date1 and date2 parameters are required');
+                done();
+            });
+        });
+    });
+
+    it('should return lines containing Fusce from text file', (done) => {
+        http.get('http://localhost:3000/GetLineByLineFromTextFile', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                const json = JSON.parse(data);
+                assert.equal(res.statusCode, 200);
+                assert(Array.isArray(json.lines));
+                assert.equal(typeof json.count, 'number');
+                assert(json.lines.every(line => line.includes('Fusce')));
+                done();
+            });
+        });
+    });
+
+    it('should return a random European country with ISO code', (done) => {
+        http.get('http://localhost:3000/RandomEuropeanCountry', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                const json = JSON.parse(data);
+                assert.equal(res.statusCode, 200);
+                assert(json.country);
+                assert(json.isoCode);
+                assert.equal(typeof json.country, 'string');
+                assert.equal(typeof json.isoCode, 'string');
+                done();
+            });
+        });
+    });
+
+    it('should return 404 for unsupported routes', (done) => {
+        http.get('http://localhost:3000/unsupported', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                assert.equal(res.statusCode, 404);
+                assert.equal(data, 'method not supported');
+                done();
+            });
+        });
+    });
 });
