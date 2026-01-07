@@ -80,4 +80,19 @@ describe('Node Server', () => {
         const result = server.daysBetweenDates('2024-01-31', '2024-02-10');
         assert.equal(result, 10);
     });
+
+    it('should return status ok from health endpoint', (done) => {
+        http.get('http://localhost:3000/health', (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                const json = JSON.parse(data);
+                assert.equal(res.statusCode, 200);
+                assert.equal(json.status, 'ok');
+                done();
+            });
+        });
+    });
 });

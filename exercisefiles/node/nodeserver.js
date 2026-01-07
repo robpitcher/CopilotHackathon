@@ -189,6 +189,14 @@ const server = http.createServer((req, res) => {
             isoCode: randomCountry.isoCode
         }));
     }
+    /**
+     * Route: /health
+     * Simple health-check endpoint for monitoring
+     */
+    else if (pathname === '/health') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'ok' }));
+    }
     // Default route: handle all unrecognized paths
     else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
